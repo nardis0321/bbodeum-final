@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bbodeum.exception.AddException;
 import com.bbodeum.exception.FindException;
+import com.bbodeum.exception.ModifyException;
 import com.bbodeum.member.dto.MemberDTO;
 import com.bbodeum.member.entity.MemberStatus;
 import com.bbodeum.member.service.MemberService;
@@ -41,12 +42,26 @@ class MemberServiceTest {
 		}
 	}
 
-/**
- *     public boolean checkEmailExistence(String email);
-    public MemberDTO getMemberInfo(String email) throws FindException;
-    //이거 세 개 하나로 묶으면 안 되나?
-    public void updateMemberInfo(MemberDTO dto) throws ModifyException;
-    public void updateMemberPassword(MemberDTO dto) throws ModifyException;
-    public void updateMemberStatus(MemberDTO dto) throws ModifyException;
- */
+	@Test
+	void testGetMemberInfo() {
+		try {
+			ms.getMemberInfo("cream@cake.com");
+		} catch (FindException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	void testUpdateMemberInfo() {
+		MemberDTO dto = MemberDTO.builder()
+				.memEmail("cream@cake.com")
+				.memPhone("010-233-5344")
+				.build();
+		try {
+			ms.updateMemberInfo(dto);
+		} catch (ModifyException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -10,6 +10,7 @@ import com.bbodeum.exception.FindException;
 import com.bbodeum.exception.ModifyException;
 import com.bbodeum.member.dto.MemberDTO;
 import com.bbodeum.member.entity.Member;
+import com.bbodeum.member.entity.MemberStatus;
 import com.bbodeum.member.repository.MemberRepository;
 
 //@로그처리 필요한가?
@@ -62,58 +63,56 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public MemberDTO getMemberInfo(String email) throws FindException {
-		Optional<Member> optM = mR.findById(email);
-		if(optM.isPresent()) {
-			MemberDTO dto = MemberDTO.builder()
-					.memEmail(email)
-					.memPwd("PASSWORD")
-					.memName(optM.get().getMemName())
-					.memPhone(optM.get().getMemPhone())
-					.memStatus(optM.get().getMemStatus())
-					.build();
-			return dto;
+		try {	
+			Optional<Member> optM = mR.findById(email);
+			if(optM.isPresent()) {
+				MemberDTO dto = MemberDTO.builder()
+						.memEmail(email)
+						.memPwd("PASSWORD")
+						.memName(optM.get().getMemName())
+						.memPhone(optM.get().getMemPhone())
+						.memStatus(optM.get().getMemStatus())
+						.build();
+				return dto;
+			} else {
+				throw new FindException("아이디에 해당하는 고객이 없습니다");
+			}
+		} catch(Exception e) {
+			throw new FindException("아이디에 해당하는 고객이 없습니다");
 		}
-		throw new FindException("아이디에 해당하는 고객이 없습니다");
 	}
 
 	@Override
 	public void updateMemberInfo(MemberDTO dto) throws ModifyException {
-		Optional<Member> optM = mR.findById(dto.getMemEmail());
-		if(optM.isPresent()) {
-			Member m = Member.builder()
-					.memEmail(dto.getMemEmail())
-					.memName(dto.getMemName())
-					.memPhone(dto.getMemPhone())
-					.build();
-			mR.save(m);
+		try {
+			String email = dto.getMemEmail();
+			Optional<Member> optM = mR.findById(email);
+			if(optM.isPresent()) {
+				String pwd = dto.getMemPwd();
+				String name = dto.getMemName();
+				String phone = dto.getMemPhone();
+				MemberStatus memSt = dto.getMemStatus();
+				
+				//dynamic update 위해 null값 채우기
+				Member m = optM.get(); 
+				pwd = (pwd == null) ? m.getMemPwd() : pwd;
+				name = (name == null) ? m.getMemName() : name;
+				phone = (phone == null) ? m.getMemPhone() : phone;
+				memSt = (memSt == null) ? m.getMemStatus() : memSt;
+				m = null;
+				
+				m = Member.builder()
+						.memEmail(email)
+						.memPwd(pwd)
+						.memName(name)
+						.memPhone(phone)
+						.memStatus(memSt)
+						.build();
+				mR.save(m);
+			}
+		} catch(Exception e) {
+			throw new ModifyException("정보 수정에 실패했습니다");
 		}
-		throw new ModifyException("정보 수정에 실패했습니다");
-	}
-
-	@Override
-	public void updateMemberPassword(MemberDTO dto) throws ModifyException {
-		Optional<Member> optM = mR.findById(dto.getMemEmail());
-		if(optM.isPresent()) {
-			Member m = Member.builder()
-					.memEmail(dto.getMemEmail())
-					.memPwd(dto.getMemPwd())
-					.build();
-			mR.save(m);
-		}
-		throw new ModifyException("정보 수정에 실패했습니다");
-	}
-
-	@Override
-	public void updateMemberStatus(MemberDTO dto) throws ModifyException {
-		Optional<Member> optM = mR.findById(dto.getMemEmail());
-		if(optM.isPresent()) {
-			Member m = Member.builder()
-					.memEmail(dto.getMemEmail())
-					.memStatus(dto.getMemStatus())
-					.build();
-			mR.save(m);
-		}
-		throw new ModifyException("정보 수정에 실패했습니다");
 	}
 
 }
