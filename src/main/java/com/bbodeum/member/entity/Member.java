@@ -7,6 +7,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.bbodeum.member.dto.MemberDTO;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,10 +32,19 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	private MemberStatus memStatus;
 
-
+	public MemberDTO toDTO(Member entity) {
+		MemberDTO dto = MemberDTO.builder()
+				.memEmail(entity.getMemEmail())
+				.memPwd(entity.getMemPwd())
+				.memName(entity.getMemName())
+				.memPhone(entity.getMemPhone())
+				.memStatus(entity.getMemStatus())
+				.build();
+		return dto;
+	}
+	
 	@Builder
 	public Member(String memEmail, String memPwd, String memName, String memPhone, MemberStatus memStatus) {
-		super();
 		this.memEmail = memEmail;
 		this.memPwd = memPwd;
 		this.memName = memName;

@@ -34,9 +34,9 @@ class CourseRepositoryTest {
 	@Autowired
 	private TrainerRepository tr;
 	
-//	@Test
+	@Test
 	void testSave() throws ParseException {
-		Optional<CourseInfo> optCI = cIr.findById(4L);
+		Optional<CourseInfo> optCI = cIr.findById(1L);
 		assertNotNull(optCI);
 		Optional<Trainer> optT = tr.findById("TR0000");
 		assertTrue(optT.isPresent());
@@ -71,6 +71,24 @@ class CourseRepositoryTest {
 	}
 	
 	@Test
+	void testFindByTrainerAndDay() {	
+		Optional<Trainer> optT = tr.findById("TR0000");
+		assertNotNull(optT);
+		
+		List<Course> list = cr.findByTrainerAndDay(optT.get(), 1);
+		list.forEach((c)->{
+			logger.info("-- "+c.getTrainer()+" --");
+			logger.info("교육제목: "+ c.getCourseInfo().getCourseTitle());
+			logger.info("장소: " + c.getCourseLocation());
+			logger.info("날짜: " + c.getCourseDate().toString());
+			logger.info("가격: " + c.getCoursePrice());
+			logger.info("남은 모집인원: " + c.getCourseVacancy());
+			logger.info("상태: "+c.getCourseStatus());
+		});
+	}
+
+	
+	@Test
 	void testFindByCourseInfo() {
 		Optional<CourseInfo> optCI = cIr.findById(4L);
 		assertNotNull(optCI);
@@ -90,7 +108,7 @@ class CourseRepositoryTest {
 	
 	@Test
 	void testFindById() {
-		Optional<Course> optC = cr.findById(7L);
+		Optional<Course> optC = cr.findById(3L);
 		assertTrue(optC.isPresent());
 		
 		Course c = optC.get();

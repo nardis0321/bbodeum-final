@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import com.bbodeum.dog.entity.Dog;
 import com.bbodeum.member.entity.Member;
 
-public interface DogRepository extends CrudRepository<Dog, Integer> {
+public interface DogRepository extends CrudRepository<Dog, Long> {
 	public List<Dog> findByMember(Member m);
 	public List<Dog> findByMemberAndDogName(Member m, String dogName);
 	
