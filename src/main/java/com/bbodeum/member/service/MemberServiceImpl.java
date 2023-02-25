@@ -111,7 +111,7 @@ public class MemberServiceImpl implements MemberService{
 				mR.save(m);
 			}
 		} catch(Exception e) {
-			throw new ModifyException("정보 수정에 실패했습니다");
+			throw new ModifyException("회원 정보 수정에 실패했습니다");
 		}
 	}
 

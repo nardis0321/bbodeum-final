@@ -9,27 +9,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.bbodeum.dog.dto.DogDTO;
 import com.bbodeum.member.entity.Member;
-import com.bbodeum.member.entity.MemberStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Setter @Getter @NoArgsConstructor @AllArgsConstructor
-@ToString
-
+@Getter 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "dog")
 @DynamicUpdate
 public class Dog {
 	@Id
@@ -42,7 +38,7 @@ public class Dog {
 
 	private String dogName;
 	
-	private float dogWeight;
+	private Double dogWeight;
 	
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd", timezone="Asia/Seoul")
@@ -53,4 +49,28 @@ public class Dog {
 	@Enumerated(EnumType.STRING)
 	private DogStatus dogStatus;
 
+	@Builder
+	public Dog(Long dogId, Member member, String dogName, Double dogWeight, Date dogBday, String dogBreed,
+			DogStatus dogStatus) {
+		this.dogId = dogId;
+		this.member = member;
+		this.dogName = dogName;
+		this.dogWeight = dogWeight;
+		this.dogBday = dogBday;
+		this.dogBreed = dogBreed;
+		this.dogStatus = dogStatus;
+	}
+	
+	public DogDTO toDTO(Dog d) {
+		DogDTO dto = DogDTO.builder()
+				.dogId(d.getDogId())
+				.member(d.getMember().toDTO(member))
+				.dogName(d.getDogName())
+				.dogWeight(d.getDogWeight())
+				.dogBday(d.getDogBday())
+				.dogBreed(d.getDogBreed())
+				.dogStatus(d.getDogStatus())
+				.build();
+		return dto;
+	}
 }
