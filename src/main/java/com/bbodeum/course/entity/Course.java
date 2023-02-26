@@ -1,5 +1,6 @@
 package com.bbodeum.course.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,25 +14,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.bbodeum.apply.dto.ApplyDTO;
 import com.bbodeum.apply.entity.Apply;
+import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.trainer.entity.Trainer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter @Getter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@NoArgsConstructor
 
 @Entity
-@Table
 @DynamicUpdate
 public class Course {
 	@Id
@@ -63,5 +64,47 @@ public class Course {
 			cascade = CascadeType.ALL,
 			mappedBy = "course")
 	private List<Apply> apply;
+	
+	
+	@Builder
+	public Course(Long courseId, CourseInfo courseInfo, Trainer trainer, String courseLocation, Date courseDate,
+			int coursePrice, int courseVacancy, CourseStatus courseStatus, List<Apply> apply) {
+		this.courseId = courseId;
+		this.courseInfo = courseInfo;
+		this.trainer = trainer;
+		this.courseLocation = courseLocation;
+		this.courseDate = courseDate;
+		this.coursePrice = coursePrice;
+		this.courseVacancy = courseVacancy;
+		this.courseStatus = courseStatus;
+		this.apply = apply;
+	}
+	
+	
+	public CourseDTO toDTO(Course entity) {
+		List<ApplyDTO> aDtoList = new ArrayList<>();
+		List<Apply> list = entity.getApply();
+		list.forEach((ae)->{
+			ApplyDTO aD = ae.toDTO(ae);
+			aDtoList.add(aD);
+		});
+		CourseDTO dto = CourseDTO.builder()
+				.courseId(entity.getCourseId())
+				.courseInfo(entity.getCourseInfo().toDTO(entity.getCourseInfo()))
+				.trainer(entity.getTrainer().toDTOWithoutPwd(entity.getTrainer()))
+				.courseLocation(entity.getCourseLocation())
+				.courseDate(entity.getCourseDate())
+				.coursePrice(entity.getCoursePrice())
+				.courseVacancy(entity.getCourseVacancy())
+				.apply(aDtoList)
+				.courseStatus(entity.getCourseStatus())
+				.build();
+		return dto;
+	}
+
+
+
+
+	
 
 }

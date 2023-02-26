@@ -54,6 +54,20 @@ class CourseRepositoryTest {
 	}
 	
 	@Test
+	void testFindByTrId(){
+		List<Course> list = cr.findByTrId("TR0000");
+		list.forEach((c)->{
+			logger.info("-- "+c.getTrainer()+" --");
+			logger.info("교육제목: "+ c.getCourseInfo().getCourseTitle());
+			logger.info("장소: " + c.getCourseLocation());
+			logger.info("날짜: " + c.getCourseDate().toString());
+			logger.info("가격: " + c.getCoursePrice());
+			logger.info("남은 모집인원: " + c.getCourseVacancy());
+			logger.info("상태: "+c.getCourseStatus());
+		});
+	}
+	
+	@Test
 	void testFindByTrainer() {
 		Optional<Trainer> optT = tr.findById("TR0000");
 		assertNotNull(optT);
@@ -108,7 +122,7 @@ class CourseRepositoryTest {
 	
 	@Test
 	void testFindById() {
-		Optional<Course> optC = cr.findById(3L);
+		Optional<Course> optC = cr.findById(7L);
 		assertTrue(optC.isPresent());
 		
 		Course c = optC.get();
@@ -124,7 +138,7 @@ class CourseRepositoryTest {
 		Date cday = formatter.parse(dateStr);
 
 		Course c = optC.get();
-		c.setCourseDate(cday);
+//		c.setCourseDate(cday);
 		cr.save(c);
 	}
 

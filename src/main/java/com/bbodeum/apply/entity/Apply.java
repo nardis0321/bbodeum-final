@@ -4,26 +4,29 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import com.bbodeum.apply.dto.ApplyDTO;
 import com.bbodeum.basetime.entity.BaseTimeEntity;
+import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.course.entity.Course;
+import com.bbodeum.dog.dto.DogDTO;
 import com.bbodeum.dog.entity.Dog;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Setter @Getter @NoArgsConstructor @AllArgsConstructor
-
+@Getter 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "apply")
 public class Apply extends BaseTimeEntity {
 	@EmbeddedId
 	private ApplyId applyId = new ApplyId();
@@ -43,11 +46,19 @@ public class Apply extends BaseTimeEntity {
 
 	@Builder
 	public Apply(Dog dog, Course course, ApplyStatus applyStatus) {
-		super();
 		this.dog = dog;
 		this.course = course;
 		this.applyStatus = applyStatus;
 	}
 
-	
+	public ApplyDTO toDTO(Apply entity) {
+		Dog dEntity = entity.getDog();
+		Course cEntity = entity.getCourse();
+		ApplyDTO dto = ApplyDTO.builder()
+				.dog(dEntity.toDTO(dEntity))
+				.course(cEntity.toDTO(cEntity))
+				.applyStatus(entity.getApplyStatus())
+				.build();
+		return dto;
+	}
 }

@@ -1,27 +1,22 @@
 package com.bbodeum.course.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import lombok.AllArgsConstructor;
+import com.bbodeum.course.dto.CourseInfoDTO;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Setter @Getter @NoArgsConstructor @AllArgsConstructor
-@ToString
+@Getter
+@NoArgsConstructor 
 
 @Entity
-@Table(name="course_info")
 @DynamicInsert
 @DynamicUpdate
 public class CourseInfo {
@@ -33,4 +28,25 @@ public class CourseInfo {
 	private String coursePrep; //준비물
 	private String courseRecomm; //추천대상
 	
+	@Builder
+	public CourseInfo(Long courseInfoId, String courseTitle, String courseContent, String coursePrep,
+			String courseRecomm) {
+		super();
+		this.courseInfoId = courseInfoId;
+		this.courseTitle = courseTitle;
+		this.courseContent = courseContent;
+		this.coursePrep = coursePrep;
+		this.courseRecomm = courseRecomm;
+	}
+
+	public CourseInfoDTO toDTO(CourseInfo entity) {
+		CourseInfoDTO dto = CourseInfoDTO.builder()
+				.courseInfoId(entity.getCourseInfoId())
+				.courseTitle(entity.getCourseTitle())
+				.courseContent(entity.getCourseContent())
+				.coursePrep(entity.getCoursePrep())
+				.courseRecomm(entity.getCourseRecomm())
+				.build();
+		return dto;
+	}
 }

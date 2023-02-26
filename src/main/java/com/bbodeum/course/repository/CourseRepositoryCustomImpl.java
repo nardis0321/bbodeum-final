@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.bbodeum.course.entity.Course;
-import com.bbodeum.course.entity.CourseInfo;
 import com.bbodeum.course.entity.QCourse;
+import com.bbodeum.course.entity.QCourseInfo;
 import com.bbodeum.trainer.entity.QTrainer;
 import com.bbodeum.trainer.entity.Trainer;
 import com.querydsl.core.types.ConstantImpl;
@@ -21,7 +21,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 @Repository
 public class CourseRepositoryCustomImpl implements CourseRepositoryCustom {
 	 private final JPAQueryFactory query;
+	 
 	 QCourse c = QCourse.course;
+	 QCourseInfo i = QCourseInfo.courseInfo;
 	 QTrainer t = QTrainer.trainer;
 	 
 	 public CourseRepositoryCustomImpl(JPAQueryFactory query) {
@@ -36,6 +38,14 @@ public class CourseRepositoryCustomImpl implements CourseRepositoryCustom {
 				.fetch();
 	}
 
+	@Override
+	public List<Course> findByTrId(String trId) {
+		return query.selectFrom(c)
+				.join(c.trainer, t)
+				.where(t.trId.eq(trId))
+				.fetch();
+	}	
+	
 	 @Override
 //	 public List<Course> findByTrainer(Trainer trainer, Integer day, Pageable pageable) {
 	 public List<Course> findByTrainerAndDay(Trainer trainer, Integer day) {
@@ -59,5 +69,7 @@ public class CourseRepositoryCustomImpl implements CourseRepositoryCustom {
 	private BooleanExpression dayEq(Integer day){
 		//1-7 : sun-sat
 		return day != null ? c.courseDate.dayOfWeek().eq(day) : null;
-	}	 
+	}
+
+	 
 }
