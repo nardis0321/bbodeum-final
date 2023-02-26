@@ -25,16 +25,7 @@ public class TrainerServiceImpl implements TrainerService {
 		Optional<Trainer> optT = tr.findById(id);
 		if(optT.isPresent()) {
 			Trainer entity = optT.get();
-			TrainerDTO dto = TrainerDTO.builder()
-					.trId(id)
-					.trPwd("")
-					.trName(entity.getTrName())
-					.trSummary(entity.getTrSummary())
-					.trExperience(entity.getTrExperience())
-					.trEducation(entity.getTrEducation())
-					.trCertificates(entity.getTrCertificates())
-					.trStatus(entity.getTrainerStatus())
-					.build();
+			TrainerDTO dto = entity.toDTOWithoutPwd(entity);
 			return dto;
 		} else {
 			throw new FindException("정보를 찾을 수 없습니다");
@@ -47,16 +38,7 @@ public class TrainerServiceImpl implements TrainerService {
 		if(optT.isPresent()) {
 			Trainer entity = optT.get();
 			if(entity.getTrPwd().equals(pwd)) {
-				TrainerDTO dto = TrainerDTO.builder()
-						.trId(id)
-						.trPwd("")
-						.trName(entity.getTrName())
-						.trSummary(entity.getTrSummary())
-						.trExperience(entity.getTrExperience())
-						.trEducation(entity.getTrEducation())
-						.trCertificates(entity.getTrCertificates())
-						.trStatus(entity.getTrainerStatus())
-						.build();
+				TrainerDTO dto = entity.toDTOWithoutPwd(entity);
 				return dto;
 			} else {
 				throw new FindException("로그인 실패");			

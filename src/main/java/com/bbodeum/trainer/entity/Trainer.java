@@ -7,6 +7,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.bbodeum.trainer.dto.TrainerDTO;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +48,19 @@ public class Trainer {
 		this.trainerStatus = trainerStatus;
 	}
 
+	public TrainerDTO toDTOWithoutPwd(Trainer entity) {
+		TrainerDTO dto = TrainerDTO.builder()
+				.trId(entity.getTrId())
+				.trPwd("")
+				.trName(entity.getTrName())
+				.trSummary(entity.getTrSummary())
+				.trExperience(entity.getTrExperience())
+				.trEducation(entity.getTrEducation())
+				.trCertificates(entity.getTrCertificates())
+				.trStatus(entity.getTrainerStatus())
+				.build();
+		return dto;
+	}
 
 	
 }
