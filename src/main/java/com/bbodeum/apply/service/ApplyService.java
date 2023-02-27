@@ -14,6 +14,5 @@ public interface ApplyService {
 	public List<ApplyDTO> getByDog(Dog d) throws FindException;
 	public List<ApplyDTO> getByCourse(Course c) throws FindException;
 	public void addApply(ApplyDTO dto) throws AddException;
-	public void addApply(Long dogId, Long courseId) throws AddException;
 	public void updateApply(ApplyDTO dto) throws ModifyException;
 }

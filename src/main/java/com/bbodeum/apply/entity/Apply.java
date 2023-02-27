@@ -46,17 +46,19 @@ public class Apply extends BaseTimeEntity {
 
 	@Builder
 	public Apply(Dog dog, Course course, ApplyStatus applyStatus) {
+		this.applyId = new ApplyId(dog.getDogId(), course.getCourseId());
 		this.dog = dog;
 		this.course = course;
 		this.applyStatus = applyStatus;
 	}
-
+	
 	public ApplyDTO toDTO(Apply entity) {
 		Dog dEntity = entity.getDog();
 		Course cEntity = entity.getCourse();
 		ApplyDTO dto = ApplyDTO.builder()
 				.dog(dEntity.toDTO(dEntity))
-				.course(cEntity.toDTO(cEntity))
+//				.course(cEntity.toDTO(cEntity))
+				.course(cEntity.toDTONoApplies(cEntity))
 				.applyStatus(entity.getApplyStatus())
 				.build();
 		return dto;

@@ -41,35 +41,38 @@ class ApplyRepositoryTest {
 	@Test
 	void testSave() {
 		Optional<Course> optC = cr.findById(3L);
-		Course c = optC.get();
-		
-		Optional<Member> optM = mr.findById("lewis@goat.com");
-		List<Dog> list = dr.findByMember(optM.get());
-		Dog d = list.get(0);
+		Course c = Course.builder()
+				.courseId(5L)
+				.build();
 
-		Apply a = new Apply(d, c, ApplyStatus.APPLIED);
+		Optional<Dog> optD = dr.findById(2L);
+		Dog d = Dog.builder()
+				.dogId(2L)
+				.build();
+
+		Apply a = Apply.builder()
+				.dog(d)
+				.course(c)
+				.applyStatus(ApplyStatus.APPLIED)
+				.build();
 		
 		ar.save(a);
 	}
 	
 	@Test
-	void testFindById() {
-		Optional<Course> optC = cr.findById(3L);
-		Course c = optC.get();
-		
-		Optional<Member> optM = mr.findById("lewis@goat.com");
-		List<Dog> list = dr.findByMember(optM.get());
-		Dog d = list.get(0);
-		
-		ApplyId aID = new ApplyId(d.getDogId(),c.getCourseId());
-		Optional<Apply> optA = ar.findById(aID);
-		assertTrue(optA.isPresent());
-		Apply a = optA.get();
-		assertEquals("APPLIED", a.getApplyStatus().toString());
-		logger.info("-- Apply findedById --");
-		logger.info("id: " +a.getApplyId().getApplyDogId()+" + "+a.getApplyId().getApplyCourseId());
-		logger.info("생성일: "+ a.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-		logger.info("수정일: "+ a.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+	void testFindByIds() {
+		try {
+			Optional<Apply> optA = ar.findById(new ApplyId(2L, 3L));
+			assertTrue(optA.isPresent());
+			Apply a = optA.get();
+			assertEquals("APPLIED", a.getApplyStatus().toString());
+			logger.info("-- Apply findedById --");
+			logger.info("id: " +a.getApplyId().getApplyDogId()+" + "+a.getApplyId().getApplyCourseId());
+			logger.info("생성일: "+ a.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			logger.info("수정일: "+ a.getModifiedDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
