@@ -29,21 +29,21 @@ class DogRepositoryTest {
 	@Autowired
 	private MemberRepository mr;
 
-//	@Test
+	@Test
 	void testDogSave() throws ParseException {
-		Dog d = new Dog();
 		Optional<Member> optM = mr.findById("lewis@goat.com");
 		assertTrue(optM.isPresent());
 		
-		d.setMember(optM.get());
-		d.setDogName("로스코");
-		d.setDogWeight(20);
 		String dateStr = "2016년 06월 19일";
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일");
 		Date bday = formatter.parse(dateStr);
-		d.setDogBday(bday);
-		d.setDogBreed("핏불");
-		
+		Dog d = Dog.builder()
+				.member(optM.get())
+				.dogName("로스코")
+				.dogWeight((double) 20)
+				.dogBday(bday)
+				.dogBreed("핏불")
+				.build();
 		dr.save(d);
 	}
 	
@@ -81,21 +81,4 @@ class DogRepositoryTest {
 		assertEquals(expectedDogBday, dog.getDogBday().toString());
 	}
 	
-	@Test
-	void testDogUpdate() {
-		Optional<Member> optM = mr.findById("lewis@goat.com");
-		assertTrue(optM.isPresent());
-
-		List<Dog> list = dr.findByMemberAndDogName(optM.get(), "로스코");
-		int expectedListLength = 1;
-		assertEquals(expectedListLength, list.size());
-		Dog dog = list.get(0);
-
-		dog.setDogWeight(25);
-		DogStatus dogStat = DogStatus.ACTIVE;
-		dog.setDogStatus(dogStat);
-
-		dr.save(dog);
-	}
-
 }
