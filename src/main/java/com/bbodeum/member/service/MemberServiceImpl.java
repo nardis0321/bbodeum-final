@@ -13,8 +13,6 @@ import com.bbodeum.member.entity.Member;
 import com.bbodeum.member.entity.MemberStatus;
 import com.bbodeum.member.repository.MemberRepository;
 
-//@로그처리 필요한가?
-//@RequiredArgsConstructor 필요한가?
 @Service
 public class MemberServiceImpl implements MemberService{
 	@Autowired
@@ -25,15 +23,19 @@ public class MemberServiceImpl implements MemberService{
 		Optional<Member> optM = mR.findById(email);
 		if(optM.isPresent()) {
 			Member m = optM.get();
-			if(m.getMemPwd().equals(pwd)) {
-				MemberDTO member = MemberDTO.builder()
-						.memEmail(email)
-						.memPwd("PASSWORD")
-						.memName(optM.get().getMemName())
-						.memPhone(optM.get().getMemPhone())
-						.memStatus(optM.get().getMemStatus())
-						.build();
-				return member;
+			if(m.getMemStatus()==MemberStatus.NORMAL) {
+				if(m.getMemPwd().equals(pwd)) {
+					MemberDTO member = MemberDTO.builder()
+							.memEmail(email)
+							.memPwd("PASSWORD")
+							.memName(m.getMemName())
+							.memPhone(m.getMemPhone())
+//							.memStatus(optM.get().getMemStatus())
+							.build();
+					return member;
+				} else {
+					throw new FindException("로그인 실패");			
+				}
 			} else {
 				throw new FindException("로그인 실패");			
 			}
@@ -54,6 +56,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void signUp(MemberDTO dto) throws AddException {
 		try {			
+		dto.setMemStatus(MemberStatus.NORMAL);
 		Member m = dto.toEntity(dto); 
 		mR.save(m);
 		} catch(Exception e) {
