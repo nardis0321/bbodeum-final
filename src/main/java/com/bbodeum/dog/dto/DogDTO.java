@@ -36,4 +36,11 @@ public class DogDTO {
 				.build();
 		return dog;
 	}
+
+	public Dog toEntityOnlyWithId(DogDTO d) {
+		Dog dog = Dog.builder()
+				.dogId(d.getDogId())
+				.build();
+		return dog;
+	}
 }

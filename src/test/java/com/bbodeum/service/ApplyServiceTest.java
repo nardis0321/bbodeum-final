@@ -6,6 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bbodeum.apply.dto.ApplyDTO;
 import com.bbodeum.apply.service.ApplyService;
+import com.bbodeum.course.dto.CourseDTO;
+import com.bbodeum.course.service.CourseService;
+import com.bbodeum.dog.dto.DogDTO;
+import com.bbodeum.dog.service.DogService;
 import com.bbodeum.exception.AddException;
 import com.bbodeum.exception.FindException;
 
@@ -23,15 +27,16 @@ class ApplyServiceTest {
 			e.printStackTrace();
 		}
 	}
-		
+	
 	@Test
 	void testAddApply() {
-		ApplyDTO dto = ApplyDTO.builder()
-//				.dogId(1L)
-//				.courseId(43L)
-				.build();
 		try {
+			DogDTO dog = DogDTO.builder().dogId(2L).build();
+			CourseDTO c = CourseDTO.builder().courseId(3L).build();
+			ApplyDTO dto = ApplyDTO.builder().dog(dog).course(c).build();
+
 			as.addApply(dto);
+			
 		} catch (AddException e) {
 			e.printStackTrace();
 		}

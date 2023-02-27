@@ -20,8 +20,8 @@ public class ApplyDTO {
 	
 	public Apply toEntity(ApplyDTO dto) {
 		Apply entity = Apply.builder()
-				.dog(dto.getDog().toEntity(dto.getDog()))
-				.course(dto.getCourse().toEntity(dto.getCourse()))
+				.dog(dto.getDog().toEntityOnlyWithId(dto.getDog()))
+				.course(dto.getCourse().toEntityOnlyWithId(dto.getCourse()))
 				.applyStatus(dto.getApplyStatus())
 				.build();
 		return entity;

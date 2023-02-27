@@ -44,7 +44,7 @@ public class CourseDTO {
 		}
 		Course entity = Course.builder()
 //				.courseId(dto.getCourseId())
-				.courseInfo(dto.getCourseInfo().toEntity(dto.courseInfo))
+				.courseInfo(dto.getCourseInfo().toEntity(dto.getCourseInfo()))
 				.trainer(dto.getTrainer().toEntity(dto.getTrainer()))
 				.courseLocation(dto.getCourseLocation())
 				.courseDate(dto.getCourseDate())
@@ -52,6 +52,13 @@ public class CourseDTO {
 				.courseVacancy(dto.getCourseVacancy())
 				.apply(list)
 				.courseStatus(dto.getCourseStatus())
+				.build();
+		return entity;
+	}
+	
+	public Course toEntityOnlyWithId(CourseDTO dto) {
+		Course entity = Course.builder()
+				.courseId(dto.getCourseId())
 				.build();
 		return entity;
 	}
