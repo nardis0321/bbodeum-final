@@ -7,7 +7,6 @@ import com.bbodeum.course.dto.CourseInfoDTO;
 import com.bbodeum.exception.AddException;
 import com.bbodeum.exception.FindException;
 import com.bbodeum.exception.ModifyException;
-import com.bbodeum.exception.RemoveException;
 
 public interface CourseService {
 	public CourseInfoDTO getInfoCourseById(Long id) throws FindException;

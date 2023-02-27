@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,6 +92,7 @@ public class CourseServiceImpl implements CourseService {
 	
 	//--- 실제 교육들 ---
 	@Override
+	@Transactional
 	public CourseDTO getCourseById(Long id) throws FindException {
 		Optional<Course> optC = cr.findById(id);
 		if(optC.isPresent()) {
@@ -102,6 +105,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
+	@Transactional
 	public List<CourseDTO> getCourseByTrId(String trId) throws FindException {
 		List<Course> list = cr.findByTrId(trId);
 		List<CourseDTO> dtoList = new ArrayList<CourseDTO>();;

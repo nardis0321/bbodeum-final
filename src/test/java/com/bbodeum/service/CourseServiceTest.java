@@ -82,17 +82,15 @@ class CourseServiceTest {
 	
 	//교육 테스트 ----
 	@Test
-	@Transactional
 	void testGetCourseById() {
 		try {
-			CourseDTO dto = cs.getCourseById(7L);
+			CourseDTO dto = cs.getCourseById(3L);
 			System.out.println(dto);
 		} catch (FindException e) {
 			e.printStackTrace();
 		}
 	}
 	@Test
-	@Transactional
 	void testGetCourseByTrId() {
 		try {
 			List<CourseDTO> list = cs.getCourseByTrId("TR0000");
@@ -108,9 +106,11 @@ class CourseServiceTest {
 	void testAddCourse() {
 		try {
 			DateFormat dateFormat = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
-			Date date = dateFormat.parse("25/03/2023 11:00");
+//			Date date = dateFormat.parse("25/03/2023 11:00");
+			Date date = dateFormat.parse("25/04/2023 11:00");
 			CourseInfoDTO infoDto = cs.getInfoCourseById(4L);
-			TrainerDTO trDto = ts.getTrainerInfo("TR0001");
+//			TrainerDTO trDto = ts.getTrainerInfo("TR0001");
+			TrainerDTO trDto = ts.getTrainerInfo("TR0000");
 			CourseDTO dto = CourseDTO.builder()
 					.courseInfo(infoDto)
 					.trainer(trDto)
@@ -139,7 +139,6 @@ class CourseServiceTest {
 					.build();
 			cs.updateCourse(dto);
 		} catch (ModifyException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
