@@ -71,5 +71,11 @@ public class CourseRepositoryCustomImpl implements CourseRepositoryCustom {
 		return day != null ? c.courseDate.dayOfWeek().eq(day) : null;
 	}
 
+	@Override
+	public int totalCnt() {
+		return query.selectFrom(c)
+				.fetch().size();
+	}
+
 	 
 }

@@ -22,6 +22,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.bbodeum.apply.dto.ApplyDTO;
 import com.bbodeum.apply.entity.Apply;
 import com.bbodeum.course.dto.CourseDTO;
+import com.bbodeum.course.dto.CourseDTOLight;
+import com.bbodeum.trainer.dto.TrainerDTO;
 import com.bbodeum.trainer.entity.Trainer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -102,11 +104,14 @@ public class Course {
 		return dto;
 	}
 
-	public CourseDTO toDTONoApplies(Course entity) {
-		CourseDTO dto = CourseDTO.builder()
+	public CourseDTOLight toDTOLight(Course entity) {
+		TrainerDTO t = entity.getTrainer().toDTOWithoutPwd(trainer);
+		t.setTrId("");
+		t.setTrStatus(null);
+		CourseDTOLight dto = CourseDTOLight.builder()
 				.courseId(entity.getCourseId())
 				.courseInfo(entity.getCourseInfo().toDTO(entity.getCourseInfo()))
-				.trainer(entity.getTrainer().toDTOWithoutPwd(entity.getTrainer()))
+				.trainer(t)
 				.courseLocation(entity.getCourseLocation())
 				.courseDate(entity.getCourseDate())
 				.coursePrice(entity.getCoursePrice())
@@ -115,10 +120,17 @@ public class Course {
 				.build();
 		return dto;
 	}
-
-
-
-
-	
-
+//	public CourseDTO toDTONoApplies(Course entity) {
+//		CourseDTO dto = CourseDTO.builder()
+//				.courseId(entity.getCourseId())
+//				.courseInfo(entity.getCourseInfo().toDTO(entity.getCourseInfo()))
+//				.trainer(entity.getTrainer().toDTOWithoutPwd(entity.getTrainer()))
+//				.courseLocation(entity.getCourseLocation())
+//				.courseDate(entity.getCourseDate())
+//				.coursePrice(entity.getCoursePrice())
+//				.courseVacancy(entity.getCourseVacancy())
+//				.courseStatus(entity.getCourseStatus())
+//				.build();
+//		return dto;
+//	}
 }

@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bbodeum.course.dto.CourseDTO;
+import com.bbodeum.course.dto.CourseDTOLight;
 import com.bbodeum.course.dto.CourseInfoDTO;
 import com.bbodeum.course.entity.Course;
 import com.bbodeum.course.entity.CourseInfo;
 import com.bbodeum.course.entity.CourseStatus;
 import com.bbodeum.course.repository.CourseInfoRepository;
 import com.bbodeum.course.repository.CourseRepository;
+import com.bbodeum.dto.PageBean;
 import com.bbodeum.exception.AddException;
 import com.bbodeum.exception.FindException;
 import com.bbodeum.exception.ModifyException;
@@ -44,7 +46,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public List<CourseInfoDTO> getAllInfoCourse() throws FindException {
+	public List<CourseInfoDTO> getAllCourseInfo() throws FindException {
 		Iterable<CourseInfo> iter = cir.findAll();
 		List<CourseInfoDTO> list = new ArrayList<CourseInfoDTO>();
 		iter.forEach((entity)->{
@@ -93,11 +95,11 @@ public class CourseServiceImpl implements CourseService {
 	//--- 실제 교육들 ---
 	@Override
 	@Transactional
-	public CourseDTO getCourseById(Long id) throws FindException {
+	public CourseDTOLight getCourseById(Long id) throws FindException {
 		Optional<Course> optC = cr.findById(id);
 		if(optC.isPresent()) {
 			Course entity = optC.get();
-			CourseDTO dto = entity.toDTO(entity);
+			CourseDTOLight dto = entity.toDTOLight(entity);
 			return dto;
 		} else {
 			throw new FindException("교육 정보를 찾을 수 없습니다");
@@ -162,6 +164,19 @@ public class CourseServiceImpl implements CourseService {
 			throw new ModifyException("교육 수정에 실패했습니다");
 		}
 		
+	}
+
+	@Override
+	public PageBean<CourseDTOLight> getCourseAll(int curPage) throws FindException {
+		Iterable<Course> iter = cr.findAll();
+		List<CourseDTOLight> list = new ArrayList<>();
+		iter.forEach((c)->{
+			CourseDTOLight dto = c.toDTOLight(c);
+			list.add(dto);			
+		});
+		int totalCnt = cr.totalCnt();
+		PageBean<CourseDTOLight> bean = new PageBean<CourseDTOLight>(curPage, list, totalCnt);
+		return bean;
 	}
 
 }
