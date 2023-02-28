@@ -23,19 +23,14 @@ public class MemberServiceImpl implements MemberService{
 		Optional<Member> optM = mR.findById(email);
 		if(optM.isPresent()) {
 			Member m = optM.get();
-			if(m.getMemStatus()==MemberStatus.NORMAL) {
-				if(m.getMemPwd().equals(pwd)) {
+			if(m.getMemStatus()==MemberStatus.NORMAL && m.getMemPwd().equals(pwd)) {
 					MemberDTO member = MemberDTO.builder()
 							.memEmail(email)
 							.memPwd("PASSWORD")
 							.memName(m.getMemName())
 							.memPhone(m.getMemPhone())
-//							.memStatus(optM.get().getMemStatus())
 							.build();
 					return member;
-				} else {
-					throw new FindException("로그인 실패");			
-				}
 			} else {
 				throw new FindException("로그인 실패");			
 			}
@@ -55,18 +50,14 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void signUp(MemberDTO dto) throws AddException {
-		try {			
 		dto.setMemStatus(MemberStatus.NORMAL);
 		Member m = dto.toEntity(dto); 
 		mR.save(m);
-		} catch(Exception e) {
-			throw new AddException("가입 실패");
-		}
+//			throw new AddException("가입 실패");
 	}
 
 	@Override
 	public MemberDTO getMemberInfo(String email) throws FindException {
-		try {	
 			Optional<Member> optM = mR.findById(email);
 			if(optM.isPresent()) {
 				MemberDTO dto = MemberDTO.builder()
@@ -80,14 +71,10 @@ public class MemberServiceImpl implements MemberService{
 			} else {
 				throw new FindException("아이디에 해당하는 고객이 없습니다");
 			}
-		} catch(Exception e) {
-			throw new FindException("아이디에 해당하는 고객이 없습니다");
-		}
 	}
 
 	@Override
 	public void updateMemberInfo(MemberDTO dto) throws ModifyException {
-		try {
 			String email = dto.getMemEmail();
 			Optional<Member> optM = mR.findById(email);
 			if(optM.isPresent()) {
@@ -113,9 +100,7 @@ public class MemberServiceImpl implements MemberService{
 						.build();
 				mR.save(m);
 			}
-		} catch(Exception e) {
-			throw new ModifyException("회원 정보 수정에 실패했습니다");
-		}
+//			throw new ModifyException("회원 변경에 실패했습니다");
 	}
 
 }
