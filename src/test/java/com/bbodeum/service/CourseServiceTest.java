@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bbodeum.course.dto.CourseDTO;
+import com.bbodeum.course.dto.CourseDTOLight;
 import com.bbodeum.course.dto.CourseInfoDTO;
 import com.bbodeum.course.entity.CourseStatus;
 import com.bbodeum.course.service.CourseService;
@@ -41,7 +42,7 @@ class CourseServiceTest {
 	@Test
 	void testGetInfos() {
 		try {
-			List<CourseInfoDTO> list = cs.getAllInfoCourse();
+			List<CourseInfoDTO> list = cs.getAllCourseInfo();
 			for(CourseInfoDTO dto : list) {
 				System.out.println(dto);
 			}
@@ -84,7 +85,7 @@ class CourseServiceTest {
 	@Test
 	void testGetCourseById() {
 		try {
-			CourseDTO dto = cs.getCourseById(3L);
+			CourseDTOLight dto = cs.getCourseById(3L);
 			System.out.println(dto);
 		} catch (FindException e) {
 			e.printStackTrace();

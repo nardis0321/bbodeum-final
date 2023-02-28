@@ -120,17 +120,18 @@ public class Course {
 				.build();
 		return dto;
 	}
-//	public CourseDTO toDTONoApplies(Course entity) {
-//		CourseDTO dto = CourseDTO.builder()
-//				.courseId(entity.getCourseId())
-//				.courseInfo(entity.getCourseInfo().toDTO(entity.getCourseInfo()))
-//				.trainer(entity.getTrainer().toDTOWithoutPwd(entity.getTrainer()))
-//				.courseLocation(entity.getCourseLocation())
-//				.courseDate(entity.getCourseDate())
-//				.coursePrice(entity.getCoursePrice())
-//				.courseVacancy(entity.getCourseVacancy())
-//				.courseStatus(entity.getCourseStatus())
-//				.build();
-//		return dto;
-//	}
+	
+	public CourseDTO toDTONoApplies(Course entity) {
+		CourseDTO dto = CourseDTO.builder()
+				.courseId(entity.getCourseId())
+				.courseInfo(entity.getCourseInfo().toDTO(entity.getCourseInfo()))
+				.trainer(entity.getTrainer().toDTOWithoutPwd(entity.getTrainer()))
+				.courseLocation(entity.getCourseLocation())
+				.courseDate(entity.getCourseDate())
+				.coursePrice(entity.getCoursePrice())
+				.courseVacancy(entity.getCourseVacancy())
+				.courseStatus(entity.getCourseStatus())
+				.build();
+		return dto;
+	}
 }

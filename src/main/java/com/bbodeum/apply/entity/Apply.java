@@ -7,22 +7,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.Table;
 
 import com.bbodeum.apply.dto.ApplyDTO;
 import com.bbodeum.basetime.entity.BaseTimeEntity;
-import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.course.entity.Course;
-import com.bbodeum.dog.dto.DogDTO;
 import com.bbodeum.dog.entity.Dog;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 @Getter 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -57,9 +51,10 @@ public class Apply extends BaseTimeEntity {
 		Course cEntity = entity.getCourse();
 		ApplyDTO dto = ApplyDTO.builder()
 				.dog(dEntity.toDTO(dEntity))
-//				.course(cEntity.toDTO(cEntity))
 				.course(cEntity.toDTONoApplies(cEntity))
 				.applyStatus(entity.getApplyStatus())
+				.createdDate(entity.getCreatedDate())
+				.modifiedDate(entity.getModifiedDate())
 				.build();
 		return dto;
 	}

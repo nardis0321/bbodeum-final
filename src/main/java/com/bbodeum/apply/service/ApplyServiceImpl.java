@@ -1,9 +1,8 @@
 package com.bbodeum.apply.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,9 @@ import com.bbodeum.apply.entity.Apply;
 import com.bbodeum.apply.entity.ApplyId;
 import com.bbodeum.apply.entity.ApplyStatus;
 import com.bbodeum.apply.repository.ApplyRepository;
+import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.course.entity.Course;
+import com.bbodeum.dog.dto.DogDTO;
 import com.bbodeum.dog.entity.Dog;
 import com.bbodeum.exception.AddException;
 import com.bbodeum.exception.FindException;
@@ -38,34 +39,57 @@ public class ApplyServiceImpl implements ApplyService {
 	}
 
 	@Override
-	public List<ApplyDTO> getByDog(Dog d) throws FindException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ApplyDTO> getByDog(Long dogId) throws FindException {
+		List<ApplyDTO> list = new ArrayList<>();
+		List<Apply> entityList = ar.findByDog(Dog.builder().dogId(dogId).build());
+		entityList.forEach((e)->{
+			ApplyDTO dto = ApplyDTO.builder()
+					.course(e.getCourse().toDTONoApplies(e.getCourse()))
+					.applyStatus(e.getApplyStatus())
+					.createdDate(e.getCreatedDate())
+					.modifiedDate(e.getModifiedDate())
+					.build();
+			list.add(dto);
+		});
+		return list;
 	}
 
 	@Override
-	public List<ApplyDTO> getByCourse(Course c) throws FindException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ApplyDTO> getByCourse(Long courseId) throws FindException {
+		List<ApplyDTO> list = new ArrayList<>();
+		List<Apply> entityList = ar.findByCourse(Course.builder().courseId(courseId).build());
+		entityList.forEach((e)->{
+			ApplyDTO dto = ApplyDTO.builder()
+					.dog(e.getDog().toDTO(e.getDog()))
+					.applyStatus(e.getApplyStatus())
+					.createdDate(e.getCreatedDate())
+					.modifiedDate(e.getModifiedDate())
+					.build();
+			list.add(dto);
+		});
+		return list;
 	}
 
 	@Override
-	public void addApply(ApplyDTO dto) throws AddException {
-		dto.setApplyStatus(ApplyStatus.APPLIED);
+	public void addApply(Long dogId, Long courseId) throws AddException {
+		ApplyDTO dto = ApplyDTO.builder()
+				.dog(DogDTO.builder().dogId(dogId).build())
+				.course(CourseDTO.builder().courseId(courseId).build())
+				.applyStatus(ApplyStatus.APPLIED)
+				.build();
 		Apply entity = dto.toEntity(dto);
 		ar.save(entity);
 	}
 
 	@Override
-	public void updateApply(ApplyDTO dto) throws ModifyException {
-
-		Optional<Apply> optA = ar.findById(new ApplyId(dto.getDog().getDogId(), dto.getCourse().getCourseId()));
-		if(optA.isPresent()) {
-			Apply entity = dto.toEntity(dto);
-			ar.save(entity);
-		} else {
-			throw new ModifyException("신청 수정에 실패했습니다");
-		}
+	public void dropApply(Long dogId, Long courseId) throws ModifyException {
+		ApplyDTO dto = ApplyDTO.builder()
+				.dog(DogDTO.builder().dogId(dogId).build())
+				.course(CourseDTO.builder().courseId(courseId).build())
+				.applyStatus(ApplyStatus.DROPPED)
+				.build();
+		Apply entity = dto.toEntity(dto);
+		ar.save(entity);
 	}
 
 }

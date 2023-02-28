@@ -1,5 +1,9 @@
 package com.bbodeum.apply.dto;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.LastModifiedDate;
+
 import com.bbodeum.apply.entity.Apply;
 import com.bbodeum.apply.entity.ApplyStatus;
 import com.bbodeum.course.dto.CourseDTO;
@@ -17,6 +21,8 @@ public class ApplyDTO {
 	private DogDTO dog;
 	private CourseDTO course;
 	private ApplyStatus applyStatus;
+	private LocalDateTime createdDate;
+	private LocalDateTime modifiedDate;
 	
 	public Apply toEntity(ApplyDTO dto) {
 		Apply entity = Apply.builder()
