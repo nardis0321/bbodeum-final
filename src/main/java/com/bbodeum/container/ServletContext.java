@@ -23,9 +23,9 @@ public class ServletContext
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins("http://192.168.0.176:5501")
+			.allowedOrigins("http://192.168.0.176:5500")
 			.allowCredentials(true)
-			.allowedMethods("GET", "POST", "PUT", "DELETE");
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH");
 	}
 
 	@Bean
