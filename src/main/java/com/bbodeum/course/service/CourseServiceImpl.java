@@ -28,9 +28,9 @@ import com.bbodeum.trainer.dto.TrainerDTO;
 public class CourseServiceImpl implements CourseService {
 	@Autowired
 	private CourseRepository cr;
-	
 	@Autowired
 	private CourseInfoRepository cir;
+	private static final int CNT_PER_PAGE = 10;
 
 	//--- 교육정보 ---
 	@Override
@@ -175,7 +175,7 @@ public class CourseServiceImpl implements CourseService {
 			list.add(dto);			
 		});
 		int totalCnt = cr.totalCnt();
-		PageBean<CourseDTOLight> bean = new PageBean<CourseDTOLight>(curPage, list, totalCnt);
+		PageBean<CourseDTOLight> bean = new PageBean<CourseDTOLight>(curPage, list, totalCnt, CNT_PER_PAGE);
 		return bean;
 	}
 

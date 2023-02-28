@@ -9,6 +9,7 @@ import com.bbodeum.apply.entity.Apply;
 import com.bbodeum.course.entity.Course;
 import com.bbodeum.course.entity.CourseStatus;
 import com.bbodeum.trainer.dto.TrainerDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,12 +26,11 @@ public class CourseDTO {
 	private TrainerDTO trainer;
 	
 	private String courseLocation;
+	@JsonFormat(pattern="yyyy년 MM월 dd일")
 	private Date courseDate;
 	private int coursePrice;
-
 	private int courseVacancy;
 	private List<ApplyDTO> apply;
-	
 	private CourseStatus courseStatus;
 	
 	public Course toEntity(CourseDTO dto) {
@@ -43,7 +43,7 @@ public class CourseDTO {
 			});
 		}
 		Course entity = Course.builder()
-//				.courseId(dto.getCourseId())
+				.courseId(dto.getCourseId())
 				.courseInfo(dto.getCourseInfo().toEntity(dto.getCourseInfo()))
 				.trainer(dto.getTrainer().toEntity(dto.getTrainer()))
 				.courseLocation(dto.getCourseLocation())
