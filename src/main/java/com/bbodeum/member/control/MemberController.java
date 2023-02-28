@@ -50,6 +50,16 @@ public class MemberController {
 		session.setAttribute("logined", m.getMemEmail());
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
+
+	@GetMapping(value="check", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> checklogined(HttpSession session) {
+		String logined = (String)session.getAttribute("logined");
+		if(logined != null) { //로그인된경우
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>("로그인이 안된 상태입니다", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 	@RequestMapping("signout")
 	public String signOut(HttpSession session) {
@@ -66,16 +76,6 @@ public class MemberController {
 			return new ResponseEntity<>(m, HttpStatus.OK);
 		}else {
 			return new ResponseEntity<>("로그인이 안 된 상태입니다", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping(value="check", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> checklogined(HttpSession session) {
-		String logined = (String)session.getAttribute("logined");
-		if(logined != null) { //로그인된경우
-			return new ResponseEntity<>(HttpStatus.OK);
-		}else {
-			return new ResponseEntity<>("로그인이 안된 상태입니다", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
