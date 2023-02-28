@@ -4,7 +4,8 @@ import java.util.Date;
 
 import com.bbodeum.dog.entity.Dog;
 import com.bbodeum.dog.entity.DogStatus;
-import com.bbodeum.member.dto.MemberDTO;
+import com.bbodeum.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,9 +18,10 @@ import lombok.NoArgsConstructor;
 @Data
 public class DogDTO {
 	private Long dogId;
-	private MemberDTO member;
+	private String member;
 	private String dogName;
 	private Double dogWeight;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date dogBday;
 	private String dogBreed;
 	private DogStatus dogStatus;
@@ -27,7 +29,7 @@ public class DogDTO {
 	public Dog toEntity(DogDTO d) {
 		Dog dog = Dog.builder()
 				.dogId(d.getDogId())
-				.member(d.getMember().toEntity(member))
+				.member(Member.builder().memEmail(d.getMember()).build())
 				.dogName(d.getDogName())
 				.dogWeight(d.getDogWeight())
 				.dogBday(d.getDogBday())

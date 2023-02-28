@@ -29,7 +29,6 @@ import com.bbodeum.member.service.MemberService;
 public class MemberController {
 	@Autowired
 	private MemberService service;
-	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@GetMapping(value="account/check/{id}")
@@ -41,15 +40,14 @@ public class MemberController {
 	@PostMapping(value = "account/signup", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> signUp(@RequestBody MemberDTO dto) throws FindException, AddException	{
 		service.signUp(dto);
+		logger.info("새 member 추가됨 : " + dto.getMemEmail());
 		return new ResponseEntity<>(dto.getMemEmail(), HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "signin", produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<?> signIn(@RequestBody Map mapString memEmail, @RequestBody String memPwd, HttpSession session) throws FindException {
 	public ResponseEntity<?> signIn(@RequestBody Map<String,String> map, HttpSession session) throws FindException {
 		MemberDTO m = service.signIn(map.get("memEmail"),  map.get("memPwd"));
 		session.setAttribute("logined", m.getMemEmail());
-		logger.info("로그인성공시 sessionid : " + session.getId());
 		return new ResponseEntity<>(m, HttpStatus.OK);
 	}
 	
@@ -84,8 +82,7 @@ public class MemberController {
 	@PatchMapping(value = "account", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> editInfo(@RequestBody MemberDTO dto) throws ModifyException {
 		service.updateMemberInfo(dto);
+		logger.info("member 정부 수정됨 : " + dto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	
 }

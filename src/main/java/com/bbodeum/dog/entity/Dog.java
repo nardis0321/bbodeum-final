@@ -37,7 +37,6 @@ public class Dog {
 	private Member member;
 
 	private String dogName;
-	
 	private Double dogWeight;
 	
 	@Temporal(TemporalType.DATE)
@@ -64,7 +63,7 @@ public class Dog {
 	public DogDTO toDTO(Dog d) {
 		DogDTO dto = DogDTO.builder()
 				.dogId(d.getDogId())
-				.member(d.getMember().toDTO(member))
+				.member(d.getMember().getMemEmail())
 				.dogName(d.getDogName())
 				.dogWeight(d.getDogWeight())
 				.dogBday(d.getDogBday())

@@ -36,9 +36,8 @@ public class DogServiceImpl implements DogService {
 	}
 
 	@Override
-	public List<DogDTO> getDogsByMem(MemberDTO mDto) throws FindException{
-		try {
-		Member m = mDto.toEntity(mDto);
+	public List<DogDTO> getDogsByMem(String id) throws FindException{
+		Member m = Member.builder().memEmail(id).build();
 		List<Dog> list = dR.findByMember(m);
 		List<DogDTO> dtoList = new ArrayList<DogDTO>();
 		list.forEach((d)->{
@@ -46,15 +45,13 @@ public class DogServiceImpl implements DogService {
 			dtoList.add(dto);
 		});
 		return dtoList;		
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new FindException("해당 반려견을 찾을 수 없습니다");
-		}
+//			throw new FindException("해당 반려견을 찾을 수 없습니다");
 	}
 	
 	@Override
 	public void addDog(DogDTO dto) throws AddException{
 		try {
+			dto.setDogStatus(DogStatus.ACTIVE);
 			Dog d = dto.toEntity(dto);
 			dR.save(d);
 		}catch(Exception e) {
@@ -65,11 +62,10 @@ public class DogServiceImpl implements DogService {
 
 	@Override
 	public void updateDog(DogDTO dto) throws ModifyException {
-		try {
 			Long id = dto.getDogId();
 			Optional<Dog> optD = dR.findById(id);
 			if(optD.isPresent()) {
-				MemberDTO memDTO = dto.getMember();
+				String memId = dto.getMember();
 				String name = dto.getDogName();
 				Double weight = dto.getDogWeight();
 				Date bday = dto.getDogBday();
@@ -77,7 +73,7 @@ public class DogServiceImpl implements DogService {
 				DogStatus dogSt = dto.getDogStatus();
 	
 				Dog d = optD.get();
-				Member mem = (memDTO==null) ? d.getMember() : memDTO.toEntity(memDTO);
+				Member mem = (memId==null) ? d.getMember() : Member.builder().memEmail(memId).build();
 				name = (name==null) ? d.getDogName() : name;
 				weight = (weight==null) ? d.getDogWeight() : weight;
 				bday = (bday==null) ? d.getDogBday() : bday;
@@ -96,17 +92,16 @@ public class DogServiceImpl implements DogService {
 						.build();
 				dR.save(d);
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new ModifyException("반려견 정보 수정에 실패했습니다");
-		}
+//			throw new ModifyException("반려견 정보 수정에 실패했습니다");
 	}
 
 	@Override
-	public void deleteDog(DogDTO dto) throws ModifyException {
+	public void deleteDog(Long dogId) throws ModifyException {
 		//TODO check apply
-		//TODO DogId?
-		dto.setDogStatus(DogStatus.DELETED);
+		DogDTO dto = DogDTO.builder()
+				.dogId(dogId)
+				.dogStatus(DogStatus.DELETED)
+				.build();
 		updateDog(dto);
 	}
 
