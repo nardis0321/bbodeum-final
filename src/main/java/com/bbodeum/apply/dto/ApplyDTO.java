@@ -8,6 +8,7 @@ import com.bbodeum.apply.entity.Apply;
 import com.bbodeum.apply.entity.ApplyStatus;
 import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.dog.dto.DogDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,9 @@ public class ApplyDTO {
 	private DogDTO dog;
 	private CourseDTO course;
 	private ApplyStatus applyStatus;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime createdDate;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDateTime modifiedDate;
 	
 	public Apply toEntity(ApplyDTO dto) {

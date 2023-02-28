@@ -16,6 +16,7 @@ import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.course.entity.Course;
 import com.bbodeum.dog.dto.DogDTO;
 import com.bbodeum.dog.entity.Dog;
+import com.bbodeum.dto.PageBean;
 import com.bbodeum.exception.AddException;
 import com.bbodeum.exception.FindException;
 import com.bbodeum.exception.ModifyException;
@@ -24,6 +25,7 @@ import com.bbodeum.exception.ModifyException;
 public class ApplyServiceImpl implements ApplyService {
 	@Autowired
 	private ApplyRepository ar;
+	private static final int CNT_PER_PAGE = 10;
 	
 	@Override
 	public ApplyDTO getById(Long dogId, Long courseId) throws FindException {
@@ -39,7 +41,7 @@ public class ApplyServiceImpl implements ApplyService {
 	}
 
 	@Override
-	public List<ApplyDTO> getByDog(Long dogId) throws FindException {
+	public PageBean<ApplyDTO> getByDog(Long dogId, int curPage) throws FindException {
 		List<ApplyDTO> list = new ArrayList<>();
 		List<Apply> entityList = ar.findByDog(Dog.builder().dogId(dogId).build());
 		entityList.forEach((e)->{
@@ -51,11 +53,13 @@ public class ApplyServiceImpl implements ApplyService {
 					.build();
 			list.add(dto);
 		});
-		return list;
+		int totalCnt = ar.totalCntOfDog(dogId);
+		PageBean<ApplyDTO> bean = new PageBean<ApplyDTO>(curPage, list, totalCnt, CNT_PER_PAGE);
+		return bean;
 	}
 
 	@Override
-	public List<ApplyDTO> getByCourse(Long courseId) throws FindException {
+	public PageBean<ApplyDTO> getByCourse(Long courseId, int curPage) throws FindException {
 		List<ApplyDTO> list = new ArrayList<>();
 		List<Apply> entityList = ar.findByCourse(Course.builder().courseId(courseId).build());
 		entityList.forEach((e)->{
@@ -67,7 +71,9 @@ public class ApplyServiceImpl implements ApplyService {
 					.build();
 			list.add(dto);
 		});
-		return list;
+		int totalCnt = ar.totalCntOfDog(courseId);
+		PageBean<ApplyDTO> bean = new PageBean<ApplyDTO>(curPage, list, totalCnt, CNT_PER_PAGE);
+		return bean;
 	}
 
 	@Override
