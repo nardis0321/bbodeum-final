@@ -62,7 +62,4 @@ public class CourseDTO {
 				.build();
 		return entity;
 	}
-	
-	
-	
 }
