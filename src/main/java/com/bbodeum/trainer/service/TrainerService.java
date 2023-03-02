@@ -10,4 +10,5 @@ public interface TrainerService {
 	public TrainerDTO signIn(String id, String pwd) throws FindException;
 	public void signUp(TrainerDTO dto) throws AddException;
     public void updateTrainerInfo(TrainerDTO dto) throws ModifyException;
+	public String getNextId() throws FindException;
 }

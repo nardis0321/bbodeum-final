@@ -47,10 +47,23 @@ public class TrainerServiceImpl implements TrainerService {
 			throw new FindException("로그인 실패");			
 		}
 	}
+	
+	@Override
+	public String getNextId() throws FindException {
+		Trainer entity = tr.findFirstByOrderByTrIdDesc();
+		String lastTrNum = entity.getTrId().substring(2);
+		int nextTrNum = Integer.parseInt(lastTrNum)+1;
+		int length = (int)Math.log10(nextTrNum)+1;
+		String nextId = "TR";
+		for(int i=1; i<=(4-length); i++) {
+			nextId += "0";
+		}
+		return nextId+nextTrNum;
+	}
 
 	@Override
 	public void signUp(TrainerDTO dto) throws AddException {
-		try {		
+		try {
 			dto.setTrStatus(TrainerStatus.TRAINER);
 			Trainer entity = dto.toEntity(dto);
 			tr.save(entity);	

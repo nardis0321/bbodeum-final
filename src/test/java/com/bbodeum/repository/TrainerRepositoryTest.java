@@ -40,6 +40,10 @@ class TrainerRepositoryTest {
 		assertEquals(expectedCertificates, trainer.getTrCertificates());
 	}
 	
-	
+	@Test
+	void testFindLastTrId() {
+		Trainer entity = tr.findFirstByOrderByTrIdDesc();
+		System.out.println(entity.getTrId());
+	}
 
 }
