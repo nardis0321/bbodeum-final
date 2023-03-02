@@ -112,7 +112,7 @@ class CourseServiceTest {
 			CourseInfoDTO infoDto = cs.getInfoCourseById(4L);
 //			TrainerDTO trDto = ts.getTrainerInfo("TR0001");
 			TrainerDTO trDto = ts.getTrainerInfo("TR0000");
-			CourseDTO dto = CourseDTO.builder()
+			CourseDTOLight dto = CourseDTOLight.builder()
 					.courseInfo(infoDto)
 					.trainer(trDto)
 					.courseLocation("운동장1")
@@ -120,7 +120,8 @@ class CourseServiceTest {
 					.coursePrice(20)
 					.courseVacancy(10)
 					.build();
-				cs.addCourse(dto);
+				Long newId = cs.addCourse(dto);
+				System.out.println("!! 테스트 결과 아이디값: "+newId);
 		} catch (AddException e) {
 			e.printStackTrace();
 		} catch (FindException e) {

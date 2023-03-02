@@ -119,10 +119,10 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public void addCourse(CourseDTO dto) throws AddException {
+	public Long addCourse(CourseDTOLight dto) throws AddException {
 		dto.setCourseStatus(CourseStatus.RECRUITING);
 		Course entity = dto.toEntity(dto);
-		cr.save(entity);
+		return cr.save(entity).getCourseId();
 	}
 
 	@Override

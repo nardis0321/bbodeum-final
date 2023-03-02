@@ -20,7 +20,8 @@ public interface CourseService {
 	public CourseDTOLight getCourseById(Long id) throws FindException;
 	public List<CourseDTO> getCourseByTrId(String trainerId) throws FindException;
 	public PageBean<CourseDTOLight> getCourseAll(int curPage) throws FindException;
-	public void addCourse(CourseDTO dto) throws AddException;
+//	public void addCourse(CourseDTOLight dto) throws AddException;
+	public Long addCourse(CourseDTOLight dto) throws AddException;
     public void updateCourse(CourseDTO dto) throws ModifyException;
    
 }
