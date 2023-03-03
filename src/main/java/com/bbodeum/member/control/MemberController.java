@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +41,7 @@ public class MemberController {
 	}
 
 	@PostMapping(value = "account/signup", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> signUp(@RequestBody MemberDTO dto) throws FindException, AddException	{
+	public ResponseEntity<?> signUp(@Validated @RequestBody MemberDTO dto) throws AddException	{
 		service.signUp(dto);
 		logger.info("새 member 추가됨 : " + dto.getMemEmail());
 		return new ResponseEntity<>(dto.getMemEmail(), HttpStatus.OK);
