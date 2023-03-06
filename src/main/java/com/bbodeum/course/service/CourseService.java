@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.course.dto.CourseDTOLight;
+import com.bbodeum.course.dto.CourseDTORequest;
 import com.bbodeum.course.dto.CourseInfoDTO;
 import com.bbodeum.dto.PageBean;
 import com.bbodeum.exception.AddException;
@@ -20,8 +21,6 @@ public interface CourseService {
 	public CourseDTOLight getCourseById(Long id) throws FindException;
 	public List<CourseDTO> getCourseByTrId(String trainerId) throws FindException;
 	public PageBean<CourseDTOLight> getCourseAll(int curPage) throws FindException;
-//	public void addCourse(CourseDTOLight dto) throws AddException;
-	public Long addCourse(CourseDTOLight dto) throws AddException;
+	public Long addCourse(CourseDTORequest dto) throws AddException;
     public void updateCourse(CourseDTO dto) throws ModifyException;
-   
 }

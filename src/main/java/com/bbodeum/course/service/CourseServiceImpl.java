@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.bbodeum.course.dto.CourseDTO;
 import com.bbodeum.course.dto.CourseDTOLight;
+import com.bbodeum.course.dto.CourseDTORequest;
 import com.bbodeum.course.dto.CourseInfoDTO;
 import com.bbodeum.course.entity.Course;
 import com.bbodeum.course.entity.CourseInfo;
@@ -119,7 +120,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public Long addCourse(CourseDTOLight dto) throws AddException {
+	public Long addCourse(CourseDTORequest dto) throws AddException {
 		dto.setCourseStatus(CourseStatus.RECRUITING);
 		Course entity = dto.toEntity(dto);
 		return cr.save(entity).getCourseId();
@@ -174,9 +175,10 @@ public class CourseServiceImpl implements CourseService {
 			CourseDTOLight dto = c.toDTOLight(c);
 			list.add(dto);			
 		});
-		int totalCnt = cr.totalCnt();
+//		int totalCnt = cr.totalCnt();
+		int totalCnt = list.size();
 		PageBean<CourseDTOLight> bean = new PageBean<CourseDTOLight>(curPage, list, totalCnt, CNT_PER_PAGE);
 		return bean;
 	}
-
+	
 }
