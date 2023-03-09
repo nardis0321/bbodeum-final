@@ -37,13 +37,19 @@ public class Apply extends BaseTimeEntity {
 
 	@Enumerated(EnumType.STRING)
 	private ApplyStatus applyStatus;
+	
+	private String impUid; //아임포트 거래 고유 번호
+	private String merchantUid; //주문 고유 번호(결제시간으로 생성)
 
 	@Builder
-	public Apply(Dog dog, Course course, ApplyStatus applyStatus) {
+	public Apply(Dog dog, Course course, ApplyStatus applyStatus, String impUid, String merchantUid) {
 		this.applyId = new ApplyId(dog.getDogId(), course.getCourseId());
 		this.dog = dog;
 		this.course = course;
 		this.applyStatus = applyStatus;
+		this.impUid =impUid;
+		this.merchantUid =merchantUid;
+			
 	}
 	
 	public ApplyDTO toDTO(Apply entity) {

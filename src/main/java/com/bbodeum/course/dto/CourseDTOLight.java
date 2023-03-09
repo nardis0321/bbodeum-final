@@ -24,7 +24,8 @@ public class CourseDTOLight {
 	private TrainerDTO trainer;
 	
 	private String courseLocation;
-	@JsonFormat(pattern="yyyy년 MM월 dd일 HH시")
+//	@JsonFormat(pattern="yyyy년 MM월 dd일 HH시")
+	@JsonFormat(pattern="MM월 dd일 HH시")
 	private Date courseDate;
 	private int coursePrice;
 	private int courseVacancy;

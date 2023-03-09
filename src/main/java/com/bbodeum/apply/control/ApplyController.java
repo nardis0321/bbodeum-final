@@ -42,13 +42,20 @@ public class ApplyController {
 	}
 	
 	@PostMapping(value="classes", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addApply(@RequestBody Map<String, Long> map, HttpSession session) throws AddException	{
+	public ResponseEntity<?> addApply(@RequestBody Map<String, String> map, HttpSession session) throws AddException {
 		String logined = (String)session.getAttribute("logined");
 		if(logined==null) {
 			return new ResponseEntity<>("로그인이 안 된 상태입니다", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		service.addApply(map.get("d"), map.get("c"));
-		return new ResponseEntity<>(HttpStatus.OK);
+		Long d = Long.parseLong(map.get("d"));
+		Long c = Long.parseLong(map.get("c"));
+		try {
+			service.getById(d, c);
+			return new ResponseEntity<>("이미 신청한 교육입니다", HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (FindException e) {
+			service.addApply(d, c, map.get("iu"), map.get("mu"));
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
 	}
 	
 	@PatchMapping(value="classes", produces = MediaType.APPLICATION_JSON_VALUE)

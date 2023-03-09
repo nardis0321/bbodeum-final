@@ -77,13 +77,19 @@ public class ApplyServiceImpl implements ApplyService {
 	}
 
 	@Override
-	public void addApply(Long dogId, Long courseId) throws AddException {
-		ApplyDTO dto = ApplyDTO.builder()
-				.dog(DogDTO.builder().dogId(dogId).build())
-				.course(CourseDTO.builder().courseId(courseId).build())
+	public void addApply(Long dogId, Long courseId, String impUid, String merchantUid) throws AddException {
+//		ApplyDTO dto = ApplyDTO.builder()
+//				.dog(DogDTO.builder().dogId(dogId).build())
+//				.course(CourseDTO.builder().courseId(courseId).build())
+//				.applyStatus(ApplyStatus.APPLIED)
+//				.build();
+		Apply entity = Apply.builder()
+				.dog(Dog.builder().dogId(dogId).build())
+				.course(Course.builder().courseId(courseId).build())
 				.applyStatus(ApplyStatus.APPLIED)
+				.impUid(impUid)
+				.merchantUid(merchantUid)
 				.build();
-		Apply entity = dto.toEntity(dto);
 		ar.save(entity);
 	}
 

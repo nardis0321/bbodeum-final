@@ -21,7 +21,7 @@ public class DogDTO {
 	private String member;
 	private String dogName;
 	private Double dogWeight;
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy년 MM월 dd일")
 	private Date dogBday;
 	private String dogBreed;
 	private DogStatus dogStatus;
