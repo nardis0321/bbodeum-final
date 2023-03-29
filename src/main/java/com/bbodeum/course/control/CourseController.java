@@ -104,7 +104,8 @@ public class CourseController {
 			}
 			String[] f1NameArr = f.getOriginalFilename().split("\\.");
 			String f1Extension = f1NameArr[f1NameArr.length-1];
-			String newF1Name = newId +"." + f1Extension;
+//			String newF1Name = newId +"." + f1Extension;
+			String newF1Name = newId +"." + "jpg";
 			File file = new File(saveDirFile, newF1Name);
 			FileCopyUtils.copy(f.getBytes(), file);
 			

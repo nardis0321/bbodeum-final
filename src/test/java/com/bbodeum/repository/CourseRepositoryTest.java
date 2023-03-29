@@ -134,7 +134,7 @@ class CourseRepositoryTest {
 		assertTrue(optC.isPresent());
 		
 		String dateStr = "2022-02-19 15:00";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd T HH:mm");
 		Date cday = formatter.parse(dateStr);
 
 		Course c = optC.get();

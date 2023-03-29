@@ -43,7 +43,7 @@ public class DogController {
 		return new ResponseEntity<>(dog, HttpStatus.OK);
 	}
 
-	@PostMapping(value="dog", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="dogs", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> addDog(@RequestBody DogDTO dto, HttpSession session) throws AddException	{
 		String logined = (String)session.getAttribute("logined");
 		if(logined==null) {

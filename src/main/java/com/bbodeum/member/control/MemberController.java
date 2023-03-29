@@ -42,7 +42,7 @@ public class MemberController {
 	public ResponseEntity<?> signUp(@Validated @RequestBody MemberDTO dto) throws AddException	{
 		service.signUp(dto);
 		logger.info("새 member 추가됨 : " + dto.getMemEmail());
-		return new ResponseEntity<>(dto.getMemEmail(), HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "signin", produces = MediaType.APPLICATION_JSON_VALUE)
