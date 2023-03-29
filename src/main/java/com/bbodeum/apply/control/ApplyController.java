@@ -41,30 +41,41 @@ public class ApplyController {
 		return new ResponseEntity<>(bean, HttpStatus.OK); 
 	}
 	
-	@PostMapping(value="classes", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addApply(@RequestBody Map<String, String> map, HttpSession session) throws AddException {
+	@PostMapping(value="check", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> checkApply(@RequestBody Map<String, String> map, HttpSession session) {
 		String logined = (String)session.getAttribute("logined");
 		if(logined==null) {
-			return new ResponseEntity<>("로그인이 안 된 상태입니다", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("로그인이 안 된 상태입니다", HttpStatus.UNAUTHORIZED);
 		}
 		Long d = Long.parseLong(map.get("d"));
 		Long c = Long.parseLong(map.get("c"));
 		try {
 			service.getById(d, c);
-			return new ResponseEntity<>("이미 신청한 교육입니다", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("이미 신청한 교육입니다", HttpStatus.BAD_REQUEST);			
 		} catch (FindException e) {
-			service.addApply(d, c, map.get("iu"), map.get("mu"));
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 	
-	@PatchMapping(value="classes", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PatchMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> cancleApply(@RequestBody Map<String, Long> map, HttpSession session) throws ModifyException	{
 		String logined = (String)session.getAttribute("logined");
 		if(logined==null) {
-			return new ResponseEntity<>("로그인이 안 된 상태입니다", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>("로그인이 안 된 상태입니다", HttpStatus.UNAUTHORIZED);
 		}
 		service.dropApply(map.get("d"), map.get("c"));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping(value="class", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> addApply(@RequestBody Map<String, String> map, HttpSession session) throws AddException {
+		String logined = (String)session.getAttribute("logined");
+		if(logined==null) {
+			return new ResponseEntity<>("로그인이 안 된 상태입니다", HttpStatus.UNAUTHORIZED);
+		}
+		Long d = Long.parseLong(map.get("d"));
+		Long c = Long.parseLong(map.get("c"));
+		service.addApply(d, c, map.get("imp_uid"), map.get("merchant_uid"));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
