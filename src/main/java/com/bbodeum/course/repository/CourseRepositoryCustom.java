@@ -9,5 +9,6 @@ public interface CourseRepositoryCustom {
 	public List<Course> findByTrainerAndDay(Trainer trainer, Integer day);
 	public List<Course> findByTrainer(Trainer trainer);
 	public List<Course> findByTrId(String trId);
+	public List<Course> findAllOrderedPaged(Long limit, Long offset);
 	public int totalCnt();
 }

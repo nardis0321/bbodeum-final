@@ -31,7 +31,7 @@ public class CourseServiceImpl implements CourseService {
 	private CourseRepository cr;
 	@Autowired
 	private CourseInfoRepository cir;
-	private static final int CNT_PER_PAGE = 10;
+//	private static final int CNT_PER_PAGE = 12;
 
 	//--- 교육정보 ---
 	@Override
@@ -169,15 +169,20 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public PageBean<CourseDTOLight> getCourseAll(int curPage) throws FindException {
-		Iterable<Course> iter = cr.findAll();
+		Long limit = 12L;  //한 페이지 안의 목록 개수
+		Long offset = limit*(curPage-1); //페이지 별 목록 시작점, 쿼리가 +1 해줌
+
+		Iterable<Course> iter = cr.findAllOrderedPaged(limit, offset);
+
 		List<CourseDTOLight> list = new ArrayList<>();
 		iter.forEach((c)->{
 			CourseDTOLight dto = c.toDTOLight(c);
-			list.add(dto);			
+			list.add(dto);
 		});
-//		int totalCnt = cr.totalCnt();
-		int totalCnt = list.size();
-		PageBean<CourseDTOLight> bean = new PageBean<CourseDTOLight>(curPage, list, totalCnt, CNT_PER_PAGE);
+		
+		int totalCnt = cr.totalCnt();
+		PageBean<CourseDTOLight> bean = new PageBean<CourseDTOLight>(curPage, list, totalCnt, 12);
+
 		return bean;
 	}
 	
