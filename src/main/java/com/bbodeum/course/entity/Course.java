@@ -105,6 +105,8 @@ public class Course {
 	}
 
 	public CourseDTOLight toDTOLight(Course entity) {
+		List<Apply> list = entity.getApply();
+		int listSize = list.size();
 		TrainerDTO t = entity.getTrainer().toDTOWithoutPwd(trainer);
 		t.setTrId("");
 		t.setTrStatus(null);
@@ -117,6 +119,7 @@ public class Course {
 				.coursePrice(entity.getCoursePrice())
 				.courseVacancy(entity.getCourseVacancy())
 				.courseStatus(entity.getCourseStatus())
+				.applyCnt(listSize)
 				.build();
 		return dto;
 	}

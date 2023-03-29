@@ -24,12 +24,13 @@ public class CourseDTOLight {
 	private TrainerDTO trainer;
 	
 	private String courseLocation;
-//	@JsonFormat(pattern="yyyy년 MM월 dd일 HH시")
-	@JsonFormat(pattern="MM월 dd일 HH시")
+	@JsonFormat(pattern="MM월 dd일 HH시", timezone = "Asia/Seoul")
 	private Date courseDate;
 	private int coursePrice;
 	private int courseVacancy;
 	private CourseStatus courseStatus;
+	
+	private int applyCnt;
 	
 	public Course toEntity(CourseDTOLight dto) {
 		Course entity = Course.builder()
